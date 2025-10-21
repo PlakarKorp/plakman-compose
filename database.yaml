@@ -1,0 +1,30 @@
+name: database-v0.0.1
+services:
+  postgres:
+    image: postgres:16.4
+    restart: always
+    environment:
+      POSTGRES_DB: echo
+      POSTGRES_USER: echo
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks: [edge]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U echo -d echo"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  pg_data:
+
+secrets:
+  pg_password:
+    file: ${PWD}/secrets/pg_password
+
+networks:
+  edge:
+    external: true

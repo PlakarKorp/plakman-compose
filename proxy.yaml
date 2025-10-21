@@ -1,0 +1,22 @@
+name: proxy-v0.0.1
+services:
+  proxy:
+    image: caddy:2
+    restart: always
+    command: ["caddy", "run", "--config", "/etc/caddy/caddy.json", "--watch", "--resume"]
+    ports: ["80:80", "443:443", "2019:2019"]
+    volumes:
+      - ${PWD}/caddy:/etc/caddy
+      - caddy_data:/data
+    networks: [edge]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:2019/config/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+volumes:
+  caddy_data:
+  caddy_config:
+networks:
+  edge:
+    external: true

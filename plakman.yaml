@@ -1,0 +1,21 @@
+name: plakman-v0.0.1
+services:
+  plakman:
+    image: "ghcr.io/plakarkop/plakman:0.2.0"
+    restart: always
+    ports:
+      - "80:8080"
+    volumes:
+      - /plakman.yaml:/plakman.yaml
+      - /data/plakman:/data
+    entrypoint: /app/plakman -foreground -config /plakman.yaml
+    networks: [edge]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+
+networks:
+  edge:
+    external: true
