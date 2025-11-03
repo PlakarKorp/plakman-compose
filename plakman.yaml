@@ -1,7 +1,7 @@
 name: plakman-v0.0.2
 services:
   plakman:
-    image: "ghcr.io/plakarkop/plakman:0.3.0"
+    image: "ghcr.io/plakarkorp/plakman:0.3.0"
     restart: always
     ports:
       - "80:8080"
