@@ -4,7 +4,7 @@ services:
     image: "ghcr.io/plakarkorp/plakman:0.3.0"
     restart: always
     ports:
-      - "80:8080"
+      - "8080:8080"
     volumes:
       - /cfg/plakman/plakman.yaml:/plakman.yaml
       - /data/plakman:/data
