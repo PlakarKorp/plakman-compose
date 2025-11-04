@@ -18,4 +18,5 @@ services:
 
 networks:
   edge:
-    external: true
+    name: edge
+    driver: bridge

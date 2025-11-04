@@ -1,4 +1,5 @@
 name: proxy-v0.0.1
+
 services:
   proxy:
     image: caddy:2
@@ -14,8 +15,11 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
 volumes:
   caddy_data:
+
 networks:
   edge:
-    external: true
+    name: edge
+    driver: bridge
