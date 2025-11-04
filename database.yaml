@@ -23,7 +23,7 @@ volumes:
 
 secrets:
   pg_password:
-    file: /data/database/pg_password
+    file: /cfg/database/pg_password
 
 networks:
   edge:

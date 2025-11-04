@@ -6,7 +6,7 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - /data/plakman/plakman.yaml:/plakman.yaml
+      - /cfg/plakman/plakman.yaml:/plakman.yaml
       - /data/plakman:/data
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
