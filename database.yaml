@@ -4,8 +4,8 @@ services:
     image: postgres:16.4
     restart: always
     environment:
-      POSTGRES_DB: echo
-      POSTGRES_USER: echo
+      POSTGRES_DB: plakman-db
+      POSTGRES_USER: plakman
       POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
     secrets:
       - pg_password
@@ -23,7 +23,7 @@ volumes:
 
 secrets:
   pg_password:
-    file: ${PWD}/secrets/pg_password
+    file: /data/database/pg_password
 
 networks:
   edge:
