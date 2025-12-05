@@ -1,6 +1,8 @@
 name: plakman-v0.8.0
 services:
   plakman:
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
     image: "ghcr.io/plakarkorp/plakman:0.8.0"
     restart: always
     ports:
@@ -20,3 +22,7 @@ networks:
   edge:
     name: edge
     driver: bridge
+
+secrets:
+  pg_password:
+    file: /data/secrets/db_password

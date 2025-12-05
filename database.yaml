@@ -12,18 +12,13 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks: [edge]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U echo -d echo"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
 
 volumes:
   pg_data:
 
 secrets:
   pg_password:
-    file: /cfg/database/pg_password
+    file: /data/secrets/db_password
 
 networks:
   edge:
