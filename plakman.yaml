@@ -12,6 +12,8 @@ services:
       - /data/plakman:/data
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
+    secrets:
+      - pg_password
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost/"]
       interval: 10s
