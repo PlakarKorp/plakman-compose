@@ -17,6 +17,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 12
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   edge:
