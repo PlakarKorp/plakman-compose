@@ -7,7 +7,7 @@ services:
     restart: always
     volumes:
       - /cfg/plakman/plakman.yaml:/plakman.yaml
-      - /data/plakman:/data
+      - /data/plakman_runtime:/var/lib/plakman
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
     secrets:

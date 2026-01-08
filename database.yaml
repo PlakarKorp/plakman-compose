@@ -10,11 +10,8 @@ services:
     secrets:
       - pg_password
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - /data/database_runtime:/var/lib/postgresql/data
     networks: [edge]
-
-volumes:
-  pg_data:
 
 secrets:
   pg_password:
