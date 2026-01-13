@@ -1,9 +1,9 @@
-name: plakman-v0.0.13
+name: plakman-v0.0.14
 services:
   plakman:
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
-    image: "ghcr.io/plakarkorp/plakman:v0.0.13"
+    image: "ghcr.io/plakarkorp/plakman:v0.0.14"
     restart: always
     volumes:
       - /cfg/plakman/plakman.yaml:/plakman.yaml
