@@ -3,6 +3,8 @@ services:
   postgres:
     image: postgres:16.4
     restart: always
+    labels:
+      logging.service: db
     environment:
       POSTGRES_DB: plakman-db
       POSTGRES_USER: plakman
@@ -12,6 +14,11 @@ services:
     volumes:
       - /data/database_runtime:/var/lib/postgresql/data
     networks: [edge]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 secrets:
   pg_password:

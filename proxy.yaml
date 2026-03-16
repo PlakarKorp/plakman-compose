@@ -6,8 +6,12 @@ services:
     restart: always
     command: ["caddy", "run", "--config", "/etc/caddy/caddy.json", "--resume"]
     ports: ["80:80", "443:443", "2019:2019"]
+    labels:
+      logging.service: proxy
+    configs:
+      - source: caddy_config
+        target: /etc/caddy/caddy.json
     volumes:
-      - /cfg/caddy/caddy.json:/etc/caddy/caddy.json
       - caddy_data:/data
     networks: [edge]
     healthcheck:
@@ -15,6 +19,11 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   caddy_data:
@@ -23,3 +32,33 @@ networks:
   edge:
     name: edge
     driver: bridge
+
+configs:
+  caddy_config:
+    content: |
+      {
+          "admin": { "listen": ":2019" },
+          "apps": {
+            "http": {
+              "servers": {
+                "srv0": {
+                  "listen": [":80"],
+                  "routes": [
+                    {
+                      "match": [{ "path": ["/healthz"] }],
+                      "handle": [{ "handler": "static_response", "body": "ok" }]
+                    },
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [{ "dial": "nonexistant:8080" }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+      }
