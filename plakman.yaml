@@ -90,6 +90,7 @@ configs:
           pkgDir: /var/lib/plakman/pkgs/
           plakmanUrl: http://plakman:8080
           plakletBin: /usr/local/bin/plaklet
+          cachedBin: /usr/local/bin/cached
         journal:
           dbStorage: true
           logPath: /var/lib/plakman/journal.log
