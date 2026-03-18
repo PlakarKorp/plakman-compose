@@ -13,7 +13,7 @@ services:
         target: /plakman.yaml 
     volumes:
       - /data/plakman_runtime:/var/lib/plakman
-      - /data/logs:/logs
+      - :/logs
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
     secrets:
@@ -69,7 +69,8 @@ configs:
       [sinks.file]
       type = "file"
       inputs = ["add_service"]
-      path = "/logs/all_logs.json"
+      path = "/logs/plakman-logs-%Y-%m-%d.log.gz"
+      compression = "gzip"
       encoding.codec = "json"
 
 
