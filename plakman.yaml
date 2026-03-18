@@ -13,7 +13,7 @@ services:
         target: /plakman.yaml 
     volumes:
       - /data/plakman_runtime:/var/lib/plakman
-      - :/logs
+      - /data/logs:/logs
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
     secrets:
