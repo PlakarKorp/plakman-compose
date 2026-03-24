@@ -1,10 +1,10 @@
-name: plakman-v0.0.16
+name: plakman-v0.0.18
 services:
   plakman:
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
       SSH_AUTH_SOCK: /var/lib/plakman/ssh-agent.sock
-    image: "ghcr.io/plakarkorp/plakman:v0.0.16"
+    image: "ghcr.io/plakarkorp/plakman:v0.0.18"
     restart: always
     labels:
       logging.service: plakman
