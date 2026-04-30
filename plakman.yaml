@@ -25,9 +25,6 @@ services:
       retries: 12
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    devices:
-      - /dev/kvm
-      - /dev/fuse
     cap_add:
       - SYS_ADMIN
     security_opt:
