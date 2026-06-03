@@ -14,6 +14,8 @@ services:
     volumes:
       - /data/plakman_runtime:/var/lib/plakman
       - /data/logs:/logs
+      # Bind the entire /data directory to allow the PCP integration to back up the instance.
+      - /data:/appliance_data:ro
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
     secrets:
@@ -47,8 +49,6 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /data/logs:/logs
-      # Bind the entire /data directory to allow the PCP integration to back up the instance.
-      - /data:/appliance_data:ro
     command: -c /etc/vector/vector.toml
 
 networks:
