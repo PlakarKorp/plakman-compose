@@ -10,7 +10,7 @@ services:
       logging.service: plakman
     configs:
       - source: plakman_config
-        target: /plakman.yaml 
+        target: /plakman.yaml
     volumes:
       - /data/plakman_runtime:/var/lib/plakman
       - /data/logs:/logs
@@ -47,6 +47,8 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /data/logs:/logs
+      # Bind the entire /data directory to allow the PCP integration to back up the instance.
+      - /data:/appliance_data:ro
     command: -c /etc/vector/vector.toml
 
 networks:
@@ -78,7 +80,6 @@ configs:
       path = "/logs/plakman-logs-%Y-%m-%d.log.gz"
       compression = "gzip"
       encoding.codec = "json"
-
 
   plakman_config:
     content: |
