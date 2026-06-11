@@ -1,10 +1,14 @@
-name: plakman-v0.0.31
+name: plakman-v0.9.0
+
+volumes:
+  vector-conf: {}
+
 services:
   plakman:
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
       SSH_AUTH_SOCK: /var/lib/plakman/ssh-agent.sock
-    image: "ghcr.io/plakarkorp/plakman:v0.0.31"
+    image: "ghcr.io/plakarkorp/plakman:v0.9.0"
     restart: always
     labels:
       logging.service: plakman
@@ -16,6 +20,11 @@ services:
       - /data/logs:/logs
       # Bind the entire /data directory to allow the PCP integration to back up the instance.
       - /data:/appliance_data:ro
+
+      # Dedicated volume for ONLY the vector relay fragment, shared with the
+      # vector sidecar. Kept separate from the state volume so the sidecar never
+      # sees plakman's keys/sockets/FUSE mounts.
+      - vector-conf:/var/lib/plakman/vector.d
     entrypoint: /usr/local/bin/plakman -foreground -config /plakman.yaml
     networks: [edge]
     secrets:
@@ -49,7 +58,23 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /data/logs:/logs
-    command: -c /etc/vector/vector.toml
+      # Dedicated volume for ONLY the vector relay fragment, shared with the
+      # vector sidecar. Kept separate from the state volume so the sidecar never
+      # sees plakman's keys/sockets/FUSE mounts.
+      - vector-conf:/etc/vector/conf.d/vector.d
+
+    # Seed a stub before launching so the `*.toml` glob is NEVER empty at
+    # startup — an empty glob is a hard startup failure in Vector, and we must
+    # not depend on plakman having synced yet. plakman later overwrites this
+    # stub (and reverts to an equivalent stub when the relay is disabled).
+    # --watch-config then hot-reloads on every change with no restart.
+    entrypoint:
+      - sh
+      - -c
+      - |
+        d=/etc/vector/conf.d/vector.d
+        [ -e "$$d/99-plakman-relay.toml" ] || printf '# vector relay not yet configured\n' > "$$d/99-plakman-relay.toml"
+        exec /usr/local/bin/vector --watch-config -c /etc/vector/vector.toml -c "$$d"/*.toml
 
 networks:
   edge:
@@ -93,6 +118,8 @@ configs:
           parentUrl: https://api.plakar.io
           stateDirectory: /var/lib/plakman/
         scheduler:
+          plakmanUrl: http://plakman:8080
+        janitor:
           plakmanUrl: http://plakman:8080
         executor:
           pkgDir: /var/lib/plakman/pkgs/
