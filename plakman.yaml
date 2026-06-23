@@ -1,4 +1,4 @@
-name: plakman-v0.10.0
+name: plakman-v0.10.1
 
 volumes:
   vector-conf: {}
