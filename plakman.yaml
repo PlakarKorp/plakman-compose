@@ -118,12 +118,12 @@ configs:
           parentUrl: https://api.plakar.io
           stateDirectory: /var/lib/plakman/
         scheduler:
-          plakmanUrl: http://plakman:8080
+          plakmanUrl: http://localhost:8080
         janitor:
-          plakmanUrl: http://plakman:8080
+          plakmanUrl: http://localhost:8080
         executor:
           pkgDir: /var/lib/plakman/pkgs/
-          plakmanUrl: http://plakman:8080
+          plakmanUrl: http://localhost:8080
           plakletBin: /usr/local/bin/plaklet
           cachedBin: /usr/local/bin/cached
         journal:
