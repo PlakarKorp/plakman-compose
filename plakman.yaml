@@ -74,7 +74,14 @@ services:
       - |
         d=/etc/vector/conf.d/vector.d
         [ -e "$$d/99-plakman-relay.toml" ] || printf '# vector relay not yet configured\n' > "$$d/99-plakman-relay.toml"
+        printf '0 0 * * *\tfind /logs -name "*.log.gz" -mtime +30 -delete\n' > /etc/crontabs/root
+        crond
         exec /usr/local/bin/vector --watch-config -c /etc/vector/vector.toml -c "$$d"/*.toml
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 networks:
   edge:
