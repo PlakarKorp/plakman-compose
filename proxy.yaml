@@ -1,4 +1,4 @@
-name: proxy-v0.0.1
+name: proxy-v0.0.2
 
 services:
   proxy:
